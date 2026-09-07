@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Tokens. One palette, one accent, dual mode.
+   Accent is the brand blue from the brief, desaturated to ~65% so it sits
+   next to the neutrals instead of glowing on top of them.
+   No pure #000 / #fff anywhere.
+--------------------------------------------------------------------------- */
+:root {
+  --surface: #fcfcfd;
+  --surface-2: #f3f4f7;
+  --surface-3: #e9ebf0;
+  --line: #e3e6ec;
+  --text: #0c1220;
+  --text-muted: #5a6478;
+  --accent: #2b54c9;
+  --accent-quiet: #dfe6fa;
+  --on-accent: #ffffff;
+
+  --font-display: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-strong: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* Light only, by explicit request: the brand reads as daylight, so the page
+   does not follow prefers-color-scheme. */
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--line);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-accent-quiet: var(--accent-quiet);
+  --color-on-accent: var(--on-accent);
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.display {
+  font-family: var(--font-display);
+  letter-spacing: -0.035em;
+  font-weight: 600;
+}
+
+/* Rationed: 3 of 10 sections carry one of these */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Every pressable element answers the press */
+.pressable {
+  transition:
+    transform 160ms var(--ease-out-strong),
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease;
+}
+
+.pressable:active {
+  transform: scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pressable:active {
+    transform: none;
+  }
+}
+
+/* Photo wipe. End state uses 0.01% because inset(0 0 0 0) serialises to
+   inset(0px) (one component) while the start state serialises to three, and
+   CSS refuses to interpolate between inset() values of differing arity. */
+.image-reveal {
+  clip-path: inset(0% 0% 100% 0%);
+  transition: clip-path 900ms var(--ease-in-out-strong);
+}
+
+.image-reveal[data-revealed="true"] {
+  clip-path: inset(0% 0% 0.01% 0%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image-reveal {
+    clip-path: none;
+    opacity: 0;
+    transition: opacity 300ms ease;
+  }
+
+  .image-reveal[data-revealed="true"] {
+    clip-path: none;
+    opacity: 1;
+  }
+}
+
+button,
+a {
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
