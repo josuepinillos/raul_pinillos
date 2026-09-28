@@ -123,6 +123,86 @@ body {
   }
 }
 
+/* Footer credit: hearts rise from "love" — once automatically on scroll into
+   view, and again on every hover. Marketing/delight tier, so a longer
+   duration than a UI control is fine; still transform + opacity only, and
+   never scale(0) (see LoveHearts component). */
+@keyframes heart-rise {
+  0% {
+    opacity: 0;
+    transform: translate(var(--heart-x, -50%), 0) scale(0.92);
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--heart-x, -50%), -26px) scale(0.92);
+  }
+}
+
+@keyframes heart-fade {
+  0%,
+  60% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.love-hearts .heart {
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  opacity: 0;
+  color: var(--accent);
+  transform: translate(var(--heart-x, -50%), 0) scale(0.92);
+  pointer-events: none;
+}
+
+.love-hearts .heart:nth-child(2) {
+  --heart-x: calc(-50% - 8px);
+}
+
+.love-hearts .heart:nth-child(3) {
+  --heart-x: calc(-50% + 8px);
+}
+
+[data-emerged="true"] .love-hearts .heart {
+  animation: heart-rise 1300ms var(--ease-out-strong) both;
+}
+
+[data-emerged="true"] .love-hearts .heart:nth-child(2) {
+  animation-delay: 120ms;
+}
+
+[data-emerged="true"] .love-hearts .heart:nth-child(3) {
+  animation-delay: 240ms;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .love-hearts:hover .heart {
+    animation: heart-rise 1300ms var(--ease-out-strong) both;
+  }
+
+  .love-hearts:hover .heart:nth-child(2) {
+    animation-delay: 120ms;
+  }
+
+  .love-hearts:hover .heart:nth-child(3) {
+    animation-delay: 240ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-emerged="true"] .love-hearts .heart,
+  .love-hearts:hover .heart {
+    animation: heart-fade 500ms ease both;
+    transform: translate(var(--heart-x, -50%), 0) scale(0.92);
+  }
+}
+
 button,
 a {
   touch-action: manipulation;

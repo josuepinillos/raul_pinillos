@@ -1,6 +1,7 @@
 import { WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import { ButtonLink } from "@/components/ui/button";
 import { CONTACT_LABEL, WHATSAPP_URL } from "./contact";
+import { LoveHearts } from "./love-hearts";
 import { Reveal } from "./reveal";
 
 /** Layout family: closing call to action. Same theme as the rest of the page. */
@@ -32,7 +33,7 @@ export function Footer() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 sm:flex-row lg:px-8">
           <p className="display text-base">Raúl Pinillos</p>
           <p className="text-xs text-text-muted">
-            Design by{" "}
+            Design with <LoveHearts /> by{" "}
             <a
               href="https://www.sielpsolutions.com/"
               target="_blank"
